@@ -14,6 +14,8 @@ const multiply = (n1,n2) => {
 const divide= (n1,n2) => {
     return n1/n2;
 } 
+
+//addition
 app.get("/add", (req,res)=>{
     try{
         const n1= parseFloat(req.query.n1); //if we dont parsefloat it will interept as strings, so '5'+ '8' will be '58'
@@ -39,6 +41,7 @@ app.get("/add", (req,res)=>{
 }
 });
 
+//subtraction
 app.get("/subtract", (req,res)=>{
     try{
         const n1= parseFloat(req.query.n1); //if we dont parsefloat it will interept as strings, so '5'+ '8' will be '58'
@@ -64,6 +67,7 @@ app.get("/subtract", (req,res)=>{
 }
 });
 
+//multiplication
 app.get("/multiply", (req,res)=>{
     try{
         const n1= parseFloat(req.query.n1); //if we dont parsefloat it will interept as strings, so '5'+ '8' will be '58'
@@ -89,6 +93,7 @@ app.get("/multiply", (req,res)=>{
 }
 });
 
+//division
 app.get("/divide", (req,res)=>{
     try{
         const n1= parseFloat(req.query.n1); //if we dont parsefloat it will interept as strings, so '5'+ '8' will be '58'
@@ -118,6 +123,8 @@ app.get("/divide", (req,res)=>{
     res.status(500).json({statuscode:500, msg: error.toString() })
 }
 });
+
+//port
 const port = 3040;
 app.listen(port,() => {
     console.log("hello I'm listening to port"+port);
