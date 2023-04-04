@@ -1,14 +1,32 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const passportJWT = require('passport-jwt');
-const jwt = require('jsonwebtoken');
+const LocalStrategy = require('passport-local').Strategy;
+passport.use(new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password'
+    }, 
+    function (email, password, cb) {
+        //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
+        return UserModel.findOne({email, password})
+           .then(user => {
+               if (!user) {
+                   return cb(null, false, {message: 'Incorrect email or password.'});
+               }
+               return cb(null, user, {message: 'Logged In Successfully'});
+          })
+          .catch(err => cb(err));
+    }
+));
+
+const express = require('express');
+
+require('./passport');
 
 const app = express();
-const jwtSecret = 'your_jwt_secret'; // Replace with your own secret key.
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(passport.initialize());
+const auth = require('./routes/auth');
+app.use('/auth', auth);
+
+app.use('/auth', auth);
+app.use('/user', passport.authenticate('jwt', {session: false}), user);
